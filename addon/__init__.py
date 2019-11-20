@@ -211,9 +211,13 @@ def update_unlocked_kanji(config):
                 url = page["pages"]["next_page"]
             else:
                 url = None
-        current_ids = set(int(cached_id) for cached_id in config.kanji_list_cache.definitions.keys())
-        all_ids = ids | current_ids
-        # TODO: Get the updated kanji definitions, patch them in to the current dict
+        previous_ids = set(int(cached_id) for cached_id in config.kanji_list_cache.definitions.keys())
+        previous_kanji = set(config.kanji_list_cache.definitions.values())
+        all_ids = ids | previous_ids
+        defs_updated, defs_etag, defs_updates = get_updated_kanji_definitions(config, all_ids)
+        config.kanji_list_cache.definitions.update(defs_updates)
+        missing_ids = set(config.kanji_list_cache.definitions.keys()) - previous_ids
+        # TODO:
         # Retrieve any items corresponding to ids which are not present in the cache without any cache specifiers
         # Update the four cache specifiers
         # Save the configuration
@@ -223,7 +227,7 @@ def get_updated_kanji_definitions(config, all_ids):
     url = (
         r"https://api.wanikani.com/v2/subjects"
         r"?types=kanji"
-        r"&ids=%s" % (",".join(all_ids))
+        r"&ids=%s" % (",".join(all_ids),)
     )
     if config.kanji_list_cache.last_definition_update:
         url += r"&updated_after=" + config.kanji_list_cache.last_definition_update
@@ -251,6 +255,10 @@ def get_updated_kanji_definitions(config, all_ids):
         else:
             url = None
     return updated, etag, updated_definitions
+
+
+def get_new_kanji_definitions(config, new_ids):
+    pass
 
 
 def sync_wani_kani():
