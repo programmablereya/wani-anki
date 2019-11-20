@@ -1,0 +1,5 @@
+{
+  "wk_api_key": "",
+  "kanji_query": "tag:kanji tag:writing is:suspended id:k_{kanji}",
+  "kanji_list_cache": ""
+}
