@@ -1,5 +1,7 @@
 {
+  "should_searching_be_fast": true,
   "wk_api_key": "",
-  "kanji_query": "tag:kanji tag:writing is:suspended id:k_{kanji}",
-  "kanji_list_cache": ""
+  "kanji_global_query": "\"deck:\u66f8\u304f\u7df4\u7fd2\" \"note:Writing Kanji\" is:suspended ({kanji})",
+  "kanji_individual_query": "id:k_{kanji}",
+  "kanji_list_cache": null
 }
